@@ -2,17 +2,27 @@
 
 //функция определяет, какой элемент для текущего является правым\левым\верхним\нижним
 
-
-
 var lines = [];
 
 for (var i = 0; i < 5; i++)
 	lines[i] = new Array(5);
 
-for (var i = 0; i < 5; i++)
+/*for (var i = 0; i < 5; i++)
 	for (var j = 0; j < 5; j++)
-		lines[i][j] = i+" "+j;
+		lines[i][j] = i+" "+j+888;
+*/
 
+
+lines[2][1] = "о";
+lines[2][2] = "х";
+lines[2][3] = "о";
+lines[2][4] = "т";
+lines[3][1] = "а";
+lines[3][2] = "б";
+//lines[3][3] = "л";
+//lines[3][4] = "н";
+//lines[4][1] = "с";
+//lines[4][3] = "у";
 
 for (var i = 0; i < 5; i++)
 {	
@@ -22,107 +32,112 @@ for (var i = 0; i < 5; i++)
 }
 
 
-function getCell (i,j, charDirrection)
+//написать прогу подсчета уникальных слов в книге.
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+var chainStrings = [];
+chainStrings.push("2-1");
+
+
+
+function createChain (string)
 {
-	switch(charDirrection)
-	{case "r":	return lines[i][j+1]; break;
-	case "l":	return lines[i][j-1]; break;
-	case "u":	return lines[i-1][j]; break;
-	case "d":	return lines[i+1][j]; break;
-	default: return undefined; break;
-	}
+	var flag = false;
+	var i,j;
+	if(string.length >= 3)
+		{
+			i = Number(string[string.length-3]); //last i, j in sequence
+			j = Number(string[string.length-1]);		
+		}
+
+if(isLetter(i+1,j, string))
+		flag = chainStrings.push(string + "@" + (Number(i)+1) + "-" + j);
+if(isLetter(i-1,j, string))
+		flag = chainStrings.push(string + "@" + (Number(i)-1) + "-" + j);
+if(isLetter(i,j+1, string))
+		flag = chainStrings.push(string + "@" + i + "-" + (Number(j)+1));
+if(isLetter(i,j-1, string))
+		flag = chainStrings.push(string + "@" + i + "-" + (Number(j)-1));
+		
 }
 
-var BigList = new Array();
+//createChain(chainStrings[0]);
 
-/*
-for(var i = 0; i < BigList.length; i++)
-	document.write(BigList[i] + "<br>");
-*/
+var a = chainStrings.length;
+var b = chainCreateFunction(0, chainStrings);
+var c = chainCreateFunction(a, chainStrings);
+var d = chainCreateFunction(b, chainStrings);
+var e = chainCreateFunction(c, chainStrings);
+var f = chainCreateFunction(d, chainStrings);
+var g = chainCreateFunction(e, chainStrings);
 
-function getChain (i,j, startString)//i,j - start position, function returns array with all posible strings, where first char in start position
+
+var h,k,l;
+while(1)
 {
-		//alert(i + " " + j + " " + startString);
-		//var outStrings  = [startSymbol,startSymbol,startSymbol,startSymbol];
-		var tempMas = [];
-		var tempMasi = [];
-		var tempMasj = [];
-		
-		var outLine = startString;
-		if(getCell(i,j,"r") != undefined)
-		{
-			try{ 
-			outLine += "-(" +getCell(i,j,"r") + ")";
-			BigList.push(outLine);
-			tempMas.push(outLine);
-			tempMasi.push(i);
-			tempMasj.push(j+1);
-			}catch(a1){alert(a1, "111111111111111");}
-		}
-		
-		 outLine = startString;
-		if(getCell(i,j,"d") != undefined)
-		{
-			try{
-			outLine += "-(" + getCell(i,j,"d") + ")"; 
-			BigList.push(outLine);
-			tempMas.push(outLine);
-			tempMasi.push(i+1);
-			tempMasj.push(j);
-			}catch(a2){alert(a2, "gghryhythy5t");}
-		}
-		
-		outLine = startString;
-		if(getCell(i,j,"u") != undefined)
-		{
-			outLine += "hg" + getCell(i,j,"u"); 
-			BigList.push(outLine)
-			getChain(i-1,j,outLine);
-			tempMasi.push(i-1);
-			tempMasj.push(j);
-		}
-		
-		outLine = startString;
-		if(getCell(i,j,"l") != undefined)
-		{
-			outLine += "hg" + getCell(i,j,"l");
-			BigList.push(outLine)
-			getChain(i,j-1,outLine);
-			tempMasi.push(i);
-			tempMasj.push(j-1);
-		}
-		
-		//if(tempMas.length==1)
-			//alert("111");
-		
-	try{	
-for(var i = 0; i < tempMas.length; i++)
-	document.write(tempMas[i] + "<br>");
-	}
-catch(d){alert(d);}
-
-	
-		document.write("length of temp mas is " +tempMas.length +  +tempMasi.length +  +tempMasj.length +"<br>");
-		
-		
-		
-			for(var i = 0; i < tempMas.length; i++)
-			try{
-			getChain(tempMasi[i],tempMasj[i],tempMas[i]);
-			}
-			catch(eee){alert(eee + "___" + tempMasi[i] + "%%%" + tempMasj[i]  + tempMas[i]);}
-		
-	
-			
+ 
+ h = chainCreateFunction(f, chainStrings);
+ if(h==f)
+	 break;
+ f = chainCreateFunction(g, chainStrings);
+ if(f==g)
+	 break;
+ g = chainCreateFunction(h, chainStrings);
+ if(g==h)
+	 break;
+ 
+ //alert(h + " " + f + " " + g);
 }
 
 
 
 
-try{
-getChain(2,2,"(2,2)");
-}catch(e){
-;};
-for(var i = 0; i < BigList.length; i++)
-	document.write(BigList[i] + "<br>");
-//document.writeln("правый элемент для 2,4 - " + getCell (2,4,"d"));
+document.write("<br>");
+for (var i  =0 ; i < chainStrings.length; i ++)
+	document.writeln(replaceChainString(chainStrings[i]) + "<br>");
+
+
+
+
+function isLetter(i,j, string)
+{
+	//alert(string.indexOf(i + "-" + j));
+	//alert(i +"="+ j + string)
+	
+	if(i >= 0 && i <5 && j >= 0 && j < 5)
+	if(lines[i][j] != undefined)
+	if(string.indexOf(i + "-" + j) == -1)	
+		return true;
+		
+	return false;
+}
+
+
+function chainCreateFunction (startPosition , chainMas)
+{
+	var a = chainMas.length;
+
+	for(var i = startPosition; i < a; i++)
+		createChain(chainMas[i]);
+	
+	
+	
+	return chainStrings.length;
+}
+
+
+function replaceChainString(string)
+{
+	var mas = string.split("@");
+	var str = "";
+	
+	for(var i =0; i < mas.length; i++)
+	str += lines[Number((mas[i])[0])][Number((mas[i][2]))];
+	return str;
+}
+
+//функция ищет все возможные позиции для вставки буквы
+
+//функция вставляет все возможные буквы на все возможные позиции - на выходе массивы lines
